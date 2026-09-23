@@ -1,19 +1,9 @@
 import { event } from './constants/event';
+import MountainBackdrop from './components/MountainBackdrop';
+import SteepleToy from './components/SteepleToy';
 
-// The wordmark and steeple pixel maps come from the project's existing
-// Hacklonega banner. Keeping the same shapes makes the site feel like one event.
-const glyphs: Record<string, string[]> = {
-  H: ['10001', '10001', '10001', '11111', '10001', '10001', '10001'],
-  A: ['01110', '10001', '10001', '11111', '10001', '10001', '10001'],
-  C: ['01111', '10000', '10000', '10000', '10000', '10000', '01111'],
-  K: ['10001', '10010', '10100', '11000', '10100', '10010', '10001'],
-  L: ['10000', '10000', '10000', '10000', '10000', '10000', '11111'],
-  O: ['01110', '10001', '10001', '10001', '10001', '10001', '01110'],
-  N: ['10001', '11001', '11001', '10101', '10011', '10011', '10001'],
-  E: ['11111', '10000', '10000', '11110', '10000', '10000', '11111'],
-  G: ['01111', '10000', '10000', '10111', '10001', '10001', '01111'],
-};
-
+// The steeple pixel map comes from the project's existing Hacklonega banner,
+// so the site and the banner feel like one event.
 const steeple = [
   '...................g.................',
   '...................gg................',
@@ -55,113 +45,111 @@ const steeple = [
   '.........www.........................',
 ];
 
-function PixelWord({ word }: { word: string }) {
+function DahlonegaScene() {
   return (
-    <span className="pixel-word" aria-hidden="true">
-      {word.split('').map((letter, letterIndex) => (
-        <span className="pixel-letter" key={letterIndex}>
-          {glyphs[letter].flatMap((row, rowIndex) =>
-            row.split('').map((cell, columnIndex) => (
-              <i className={cell === '1' ? 'pixel-cell filled' : 'pixel-cell'} key={`${rowIndex}-${columnIndex}`} />
-            )),
+    <svg className="dahlonega-scene" viewBox="0 0 520 340" role="img" aria-labelledby="scene-title">
+      <title id="scene-title">The original gold and cream Dahlonega pixel steeple with layered mountains and pine trees, contained within a cobalt circle</title>
+      <defs>
+        <clipPath id="dahlonega-circle">
+          <circle cx="322" cy="153" r="137" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#dahlonega-circle)">
+        {/* A night sky a step darker than the page keeps the circle distinct. */}
+        <circle cx="322" cy="153" r="137" fill="#0e2461" />
+        <g fill="#92b6e6" opacity=".55">
+          <path d="M207 105h18v-5h24v5h17v4h-59zm167-30h19v-5h27v5h22v4h-68z" />
+          <path d="M250 57h3v3h-3zm151 43h4v4h-4zm-176 40h3v3h-3z" />
+          <path d="M415 129h14v2h-14zm6-6h2v14h-2z" />
+        </g>
+        <path d="M175 210v-25h20v-15h20v-17h20v-16h18v18h20v18h20v17h25v-12h24v-18h20v-20h20v-17h18v17h18v18h20v18h25v20h22v115H175Z" fill="#3764b5" />
+        <path d="M175 238v-20h23v-14h23v-16h23v-14h20v15h23v17h24v19h24v-10h22v-16h24v-18h21v16h24v17h23v18h29v69H175Z" fill="#254984" />
+        <path d="M175 270v-19h30v-12h31v-10h29v12h34v12h33v-13h31v-13h28v11h30v13h29v10h23v40H175Z" fill="#173561" />
+        <g fill="#10294f">
+          <path d="M219 205h5v8h5v8h5v7h-9v14h-7v-14h-9v-7h5v-8h5zm-21 21h5v7h5v7h4v7h-8v13h-7v-13h-8v-7h4v-7h5z" />
+          <path d="M405 207h5v9h5v8h5v8h-10v16h-6v-16h-10v-8h5v-8h6zm27 20h5v7h5v8h5v7h-10v16h-6v-16h-9v-7h5v-8h5z" />
+        </g>
+        <path d="M238 262h25v3h-25zm109 10h32v3h-32zm-60 9h17v3h-17z" fill="#5074a3" />
+        <g data-steeple="" transform="translate(216 35) scale(5.5)" shapeRendering="crispEdges">
+          {steeple.flatMap((row, rowIndex) =>
+            row.split('').flatMap((cell, columnIndex) => cell === '.'
+              ? []
+              : [<rect x={columnIndex} y={rowIndex} width="1" height="1" fill={cell === 'g' ? '#ffc62f' : '#f3eedf'} key={`${rowIndex}-${columnIndex}`} />]),
           )}
-        </span>
-      ))}
-    </span>
+        </g>
+      </g>
+    </svg>
   );
 }
 
-function PixelSteeple() {
-  return (
-    <span className="pixel-steeple" aria-hidden="true">
-      {steeple.flatMap((row, rowIndex) =>
-        row.split('').map((cell, columnIndex) => (
-          <i className={`steeple-cell steeple-cell--${cell}`} key={`${rowIndex}-${columnIndex}`} />
-        )),
-      )}
-    </span>
-  );
-}
-
-function Register({ className = '', label = 'Register for free' }: { className?: string; label?: string }) {
+function Register({ className = '', label = 'Register on MLH' }: { className?: string; label?: string }) {
   return <a className={className} href={event.registrationUrl}>{label}<span aria-hidden="true">↗</span></a>;
 }
-
-const day = [
-  { title: 'Arrive', body: 'Check in through MLH OrganizerHQ when you get to the venue.' },
-  { title: 'Make', body: 'Find collaborators, explore open-source AI, and build something original.' },
-  { title: 'Submit', body: 'Share a public GitHub repository with an open-source license through OrganizerHQ Challenges.' },
-  { title: 'Show', body: 'Demo what you made. One team will win Best Open-Source AI Project.' },
-];
-
-const questions = [
-  ['What is Hacklonega?', 'A one-day, in-person Hacktoberfest Hack Day in Dahlonega, Georgia. People get together to learn and build projects using open-source or open-weight AI.'],
-  ['Is it free?', 'Yes. Hacktoberfest Hack Days are free to attend. Registration is handled by MLH OrganizerHQ.'],
-  ['Do I need to know how to code or use AI?', 'No prior hackathon or AI experience is required. Bring curiosity and a willingness to try things with other builders.'],
-  ['Can I come with a team?', 'Yes. You can build with others. Final team rules and any team-formation details will be posted on the official registration page.'],
-  ['What should I bring?', 'Bring a laptop and charger. A GitHub account will help when it is time to publish and submit your project.'],
-  ['What do I have to submit?', 'For the Best Open-Source AI Project challenge, submit an original project that meaningfully uses open-source or open-weight AI. It needs a public GitHub repository and an open-source license.'],
-] as const;
 
 export default function App() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
-      <div className="site">
+      <MountainBackdrop />
+      <div className="site" id="top">
         <header className="site-header">
-          <a className="site-logo" href="#top" aria-label="Hacklonega home"><span className="site-logo__mark" aria-hidden="true">&gt;_</span><span>HACKLONEGA</span></a>
-          <nav aria-label="Main navigation"><a href="#about">About</a><a href="#day">The day</a><a href="#faq">FAQ</a><a href={event.conductUrl}>Code of Conduct</a></nav>
-          <Register className="header-register" label="Register" />
+          <a className="site-logo" href="#top" aria-label="Hacklonega home">hacklonega<span aria-hidden="true">.</span></a>
+          <nav aria-label="Main navigation">
+            <a href="#about">About</a>
+            <a href={event.conductUrl}>MLH Code of Conduct <span aria-hidden="true">↗</span></a>
+          </nav>
         </header>
 
         <main id="main">
-          <section className="hero" id="top" aria-labelledby="hero-heading">
-            <div className="hero-window">
-              <div className="title-bar"><span className="title-bar__icon" aria-hidden="true">&gt;_</span><span>hacklonega.exe</span><span className="title-bar__controls" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
-              <div className="banner">
+          <section className="hero" aria-labelledby="hero-heading">
+            <div className="banner">
+              <div className="banner-kicker"><p>{event.programName}</p><p>{event.location}</p></div>
+              <h1 id="hero-heading" className="type-word"><span className="type-word__text">hacklonega<span aria-hidden="true">.</span></span></h1>
+              <div className="banner-body">
                 <div className="banner-copy">
-                  <p className="banner-kicker"><span>&gt;_</span> HACKTOBERFEST HACK DAY</p>
-                  <h1 id="hero-heading" className="sr-only">Hacklonega</h1>
-                  <PixelWord word="HACKLONEGA" />
-                  <div className="banner-tagline"><span aria-hidden="true" /><p>HACK THE MOUNTAINS.<br />BUILD IN THE OPEN.</p></div>
-                  <p className="banner-location"><span className="location-pin" aria-hidden="true" /><span><strong>DAHLONEGA, GEORGIA</strong><small>ONE DAY. IN PERSON. FREE.</small></span></p>
-                  <Register className="hero-register" label="REGISTER ON MLH" />
+                  <p className="banner-tagline">Hack the mountains.</p>
+                  <p className="banner-date"><time dateTime={event.date}>{event.dateLabel}</time></p>
+                  <p className="banner-description">Team up with other students and build something using open-source AI.</p>
+                  <Register className="hero-register" />
+                  <p className="banner-details">Free to attend</p>
                 </div>
-                <aside className="campus-panel" aria-label="Dahlonega pixel art">
-                  <div className="campus-panel__label"><span>UNG</span> // DAHLONEGA</div>
-                  <div className="campus-panel__art"><PixelSteeple /></div>
-                </aside>
+                <figure className="campus-panel"><SteepleToy><DahlonegaScene /></SteepleToy></figure>
               </div>
-              <div className="status-bar"><span>CODEHAWKS @ UNG</span><span>HACKTOBERFEST 2026</span></div>
             </div>
-            <p className="hero-caption">A day for making things with people who love making things.</p>
+            <a className="hero-caption" href="#about">About the hackathon <span aria-hidden="true">↓</span></a>
           </section>
 
-          <section className="about section" id="about" aria-labelledby="about-heading">
-            <div className="section-label"><span>01</span> / ABOUT</div>
-            <div className="about-grid">
-              <h2 id="about-heading">WHAT IS<br /><span>HACKLONEGA?</span></h2>
-              <div className="about-copy"><p>Hacklonega is Dahlonega’s Hacktoberfest Hack Day: a free, in-person day to learn, experiment, and build together.</p><p>Hacktoberfest celebrates open source around the world. In 2026, Hack Days focus on making projects with open-source AI and open-weight models. You do not need to arrive with an idea or know your way around AI. Start where you are.</p><a href={event.hostGuideUrl}>Learn about Hacktoberfest <span aria-hidden="true">↗</span></a></div>
+          <section className="about" id="about" aria-labelledby="about-heading">
+            <div className="about-heading">
+              <p className="eyebrow">About the event</p>
+              <h2 id="about-heading">UNG’s first hackathon</h2>
+            </div>
+            <div className="about-copy">
+              <p>Hacklonega is a one-day hackathon in Dahlonega, part of Hacktoberfest Hack Days. We’ll be building projects with open-source AI and open-weight models.</p>
+              <p>We’ll start in <strong>{event.startingLocation}</strong>. Bring a laptop and charger.</p>
+              <a href={event.hostGuideUrl}>About Hacktoberfest <span aria-hidden="true">↗</span></a>
+            </div>
+            <div className="event-note">
+              <p className="eyebrow">Event details</p>
+              <p>See the <a href={event.registrationUrl}>official MLH event page <span aria-hidden="true">↗</span></a> for the schedule and latest event details.</p>
             </div>
           </section>
-
-          <section className="day section" id="day" aria-labelledby="day-heading">
-            <div className="section-label"><span>02</span> / THE DAY</div>
-            <div className="day-heading"><h2 id="day-heading">HOW THE DAY<br /><span>UNFOLDS</span></h2><p>The final times and venue details will appear on the official MLH registration page.</p></div>
-            <div className="day-list">{day.map((item, index) => <article className="day-row" key={item.title}><span className="day-row__number">0{index + 1}</span><h3>{item.title}</h3><p>{item.body}</p><span className="day-row__arrow" aria-hidden="true">↗</span></article>)}</div>
-          </section>
-
-          <section className="challenge section" id="challenge" aria-labelledby="challenge-heading">
-            <div className="section-label"><span>03</span> / THE CHALLENGE</div>
-            <div className="challenge-grid"><div><p className="challenge-prompt">&gt; challenge.load<span className="cursor">_</span></p><h2 id="challenge-heading">BEST OPEN-<br />SOURCE AI<br /><span>PROJECT</span></h2></div><div className="challenge-copy"><p>Make an original project where open-source or open-weight AI is an important part of how it works. Show us what you tried, what you learned, and what you built.</p><ul><li>Public GitHub repository</li><li>Open-source license</li><li>Submission through OrganizerHQ Challenges</li></ul><a href={event.challengeUrl}>Read the official challenge rules <span aria-hidden="true">↗</span></a></div></div>
-          </section>
-
-          <section className="faq section" id="faq" aria-labelledby="faq-heading"><div className="section-label"><span>04</span> / FAQ</div><div className="faq-grid"><h2 id="faq-heading">A FEW<br /><span>GOOD QUESTIONS.</span></h2><div className="faq-items">{questions.map(([question, answer]) => <details key={question}><summary><span>{question}</span><span className="faq-plus" aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
-
-          <section className="closing" aria-labelledby="closing-heading"><div className="closing-inner"><span className="closing-spark" aria-hidden="true">✳</span><p>SEE YOU IN DAHLONEGA.</p><h2 id="closing-heading">LET'S BUILD<br />SOMETHING OPEN.</h2><Register className="closing-register" label="REGISTER FOR FREE" /></div></section>
         </main>
 
-        <footer className="site-footer"><div className="footer-main"><a className="footer-brand" href="#top">HACKLONEGA<span>_</span></a><div className="footer-links"><Register label="Register" /><a href={event.conductUrl}>MLH Code of Conduct</a><a href="#privacy">Privacy</a><a href="#top">Back to top ↑</a></div></div><div className="footer-meta"><p>Hacklonega is a Hacktoberfest Hack Day in Dahlonega, Georgia. Hacktoberfest 2026 is powered by MLH and DEV and presented by DigitalOcean.</p><p id="privacy">This site has no form or analytics. Hosting providers may process routine request data. Registration happens on MLH OrganizerHQ under its privacy terms.</p></div></footer>
+        <footer className="site-footer">
+          <div className="footer-main">
+            <a className="footer-brand" href="#top">hacklonega.</a>
+            <div className="footer-links">
+              <Register />
+              <a href={event.conductUrl}>MLH Code of Conduct <span aria-hidden="true">↗</span></a>
+              <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+            </div>
+          </div>
+          <div className="footer-meta">
+            <p>Hacktoberfest Hack Day · Dahlonega, Georgia<br />Registration is hosted by MLH.</p>
+            <p>This site has no form or analytics. Hosting providers may process routine request data. Registration happens on MLH OrganizerHQ under its privacy terms.</p>
+          </div>
+        </footer>
       </div>
     </>
   );
