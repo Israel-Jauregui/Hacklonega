@@ -174,16 +174,23 @@ resulting Apply. Never run `terraform apply` for `infra/site` from a laptop.
 Everything below is off until the `DOMAIN_NAME` variable is set. Canonical host
 is the apex; `www` 301-redirects to it through a CloudFront Function.
 
-### 6. Confirm the domain
+### 6. Domain: `hacklonega.dev`
 
-Tell Claude (or note here) the apex domain, the registrar, and whether the
-Cloudflare zone is **Active**. If the registrar is not Cloudflare, change the
-nameservers to the two Cloudflare shows. If the old registrar had DNSSEC on,
-turn it off **before** changing nameservers.
+Registrar: **Namecheap**. Authoritative DNS: **Cloudflare**
+(`fay.ns.cloudflare.com`, `memphis.ns.cloudflare.com`, already live as of
+2026-09-23). No DS record at the registry and no CAA records, so ACM can issue
+and there's no DNSSEC to unwind.
 
-In the Cloudflare dashboard, check the zone for existing `@`/`www` records
-(delete them or tell Claude so they can be imported) and for CAA records. If
-any CAA exists, add one allowing `amazon.com`.
+`.dev` is on the browser HSTS preload list: it is HTTPS-only everywhere, so
+the site will not load over plain HTTP until the certificate is attached.
+
+Before step 8, in Cloudflare → hacklonega.dev → DNS → Records, **delete the
+existing `hacklonega.dev` and `www` records** (currently proxied, orange
+cloud). Terraform creates its own DNS-only CNAMEs and will fail if these
+exist.
+
+In Namecheap, keep **Auto-Renew** on and the registrant email verified; the
+domain's DNS no longer lives there, so don't add records in Namecheap.
 
 ### 7. Cloudflare tokens (≈3 min)
 
@@ -215,11 +222,11 @@ gh variable set CLOUDFLARE_ZONE_ID --repo Israel-Jauregui/Hacklonega --body <zon
 ```
 
 ```bash
-gh variable set DOMAIN_NAME --repo Israel-Jauregui/Hacklonega --body <apex domain>
+gh variable set DOMAIN_NAME --repo Israel-Jauregui/Hacklonega --body hacklonega.dev
 ```
 
-Merge the domain-specific site PR (canonical URL, absolute OG image, robots,
-sitemap), then run:
+Merge the `feature/domain-hacklonega-dev` PR (canonical URL, absolute OG
+image, robots, sitemap), then run:
 
 ```bash
 gh workflow run terraform.yml --repo Israel-Jauregui/Hacklonega
@@ -232,7 +239,7 @@ updated. Approve Apply; certificate validation usually takes 2–10 minutes.
 ### 9. Launch checks
 
 ```bash
-D=<apex domain>
+D=hacklonega.dev
 ```
 
 ```bash
