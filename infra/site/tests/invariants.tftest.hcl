@@ -85,6 +85,11 @@ run "phase2_private_origin_and_headers" {
   }
 
   assert {
+    condition     = length(cloudflare_dns_record.google_site_verification) == 0
+    error_message = "No Search Console record unless google_site_verification is set."
+  }
+
+  assert {
     condition = alltrue([for d in [
       "script-src 'self'", "style-src 'self'", "img-src 'self' blob:", "frame-ancestors 'none'",
       "object-src 'none'", "base-uri 'self'", "form-action 'none'",
@@ -124,6 +129,25 @@ run "phase3_domain_dns_only_and_modern_tls" {
   assert {
     condition     = strcontains(aws_cloudfront_function.canonical_host.code, "'www.example.org'") && strcontains(aws_cloudfront_function.canonical_host.code, "https://example.org")
     error_message = "www must redirect to the apex."
+  }
+}
+
+run "search_console_verification_record" {
+  command = plan
+
+  variables {
+    domain_name              = "example.org"
+    cloudflare_zone_id       = "0123456789abcdef0123456789abcdef"
+    google_site_verification = "google-site-verification=abc_DEF-123"
+  }
+
+  assert {
+    condition = (
+      cloudflare_dns_record.google_site_verification[0].type == "TXT" &&
+      cloudflare_dns_record.google_site_verification[0].name == "example.org" &&
+      cloudflare_dns_record.google_site_verification[0].content == "\"google-site-verification=abc_DEF-123\""
+    )
+    error_message = "Search Console verification must be a quoted TXT record on the apex."
   }
 }
 

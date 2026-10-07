@@ -125,7 +125,7 @@ export default function App() {
               <h2 id="about-heading">UNG’s first hackathon</h2>
             </div>
             <div className="about-copy">
-              <p>Hacklonega is a one-day hackathon in Dahlonega, part of Hacktoberfest Hack Days. We’ll be building projects with open-source AI and open-weight models.</p>
+              <p>Hacklonega is a one-day student hackathon at the University of North Georgia in Dahlonega, part of Hacktoberfest Hack Days. We’ll be building projects with open-source AI and open-weight models.</p>
               <p>We’ll start in <strong>{event.startingLocation}</strong>. Bring a laptop and charger.</p>
               <a href={event.hostGuideUrl}>About Hacktoberfest <span aria-hidden="true">↗</span></a>
             </div>

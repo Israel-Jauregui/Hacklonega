@@ -270,6 +270,36 @@ account owner, domain renewal date and auto-renew setting, monthly cost
 expectation (roughly $1–3 at event-site traffic, budget alarm at $10), and
 incident contacts.
 
+### 10. Search Console and link previews
+
+Google Search Console → Add property → **Domain** → `hacklonega.dev`. Copy the
+TXT value it shows (`google-site-verification=…`, not secret) and let
+Terraform create the record:
+
+```bash
+gh variable set GOOGLE_SITE_VERIFICATION --repo Israel-Jauregui/Hacklonega --body 'google-site-verification=<value>'
+```
+
+```bash
+gh workflow run terraform.yml --repo Israel-Jauregui/Hacklonega
+```
+
+Expected plan: one TXT record on the apex. After Apply, click **Verify** in
+Search Console, then Sitemaps → submit `https://hacklonega.dev/sitemap.xml`,
+and URL Inspection → `https://hacklonega.dev/` → Request indexing. Bing
+Webmaster Tools can import the verified property from Search Console.
+
+After each deploy that changes copy or metadata:
+
+```bash
+curl -s https://hacklonega.dev/ | grep -c 'application/ld+json\|<h1'
+```
+
+Expected: `2` (the page is prerendered, with Event structured data). Check
+the event markup in Google's Rich Results Test, and re-scrape link previews
+in the LinkedIn Post Inspector and Facebook Sharing Debugger, which cache the
+old image.
+
 ### Later, optional
 
 - **DNSSEC:** enable in Cloudflare once the zone has been stable for a week,

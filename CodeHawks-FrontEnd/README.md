@@ -11,6 +11,18 @@ npm run dev
 
 Run `npm run typecheck`, `npm run lint`, and `npm run build` before a release. `npm run preview` serves the production build locally.
 
+## Search and sharing
+
+`npm run build` ends with `scripts/prerender.mjs`, which renders the page into `dist/index.html` and adds schema.org Event data built from `src/constants/event.ts`. Crawlers and link previews that do not run JavaScript get the full page, and the browser hydrates it. The dev server is not prerendered.
+
+Link previews use `public/og-hacklonega.png`, because most platforms do not render SVG. After editing `og-hacklonega.svg`, regenerate it:
+
+```sh
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --screenshot="$PWD/public/og-hacklonega.png" "file://$PWD/public/og-hacklonega.svg"
+```
+
+The title, description and canonical URL live in `index.html`; keep them in step with `src/constants/event.ts`.
+
 ## Interactive steeple
 
 On eligible desktops, the existing SVG illustration becomes the texture of a small WebGL sphere. Click or hold to squeeze it, drag to rotate, and flick to send it spinning. Hard spins coast down on their own; after 1.8 seconds without input, a damped spring gradually returns it to its original orientation. Before the first touch, a faint breathing halo and an occasional glint hint that it can be played with, and the ball leans slightly toward a hovering cursor. The artwork never moves on its own, only in response to a pointer, keys, or scrolling.

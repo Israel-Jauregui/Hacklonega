@@ -49,3 +49,14 @@ variable "cloudflare_zone_id" {
     error_message = "cloudflare_zone_id must be a 32-character hex zone ID."
   }
 }
+
+variable "google_site_verification" {
+  description = "Google Search Console domain-property TXT value (google-site-verification=...). Not secret. Empty skips the record."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.google_site_verification == "" || can(regex("^google-site-verification=[A-Za-z0-9_-]+$", var.google_site_verification))
+    error_message = "google_site_verification must be the full TXT value, starting with google-site-verification=."
+  }
+}

@@ -3,7 +3,7 @@
 | Asset | Source and rights | Use |
 | --- | --- | --- |
 | Page layout, type wordmark, and mountain backdrop | Newly authored React/CSS/SVG in this repository (`src/App.tsx`, `src/components/MountainBackdrop.tsx`) | Site artwork; the hero wordmark is set in system Courier New to match the header logo |
-| Favicon and Open Graph image | Newly authored SVG in this repository, using the preserved project wordmark and steeple maps | Browser and sharing previews |
+| Favicon and Open Graph image | Newly authored SVG in this repository, using the preserved project wordmark and steeple maps. `public/og-hacklonega.png` is a 1200×630 render of `og-hacklonega.svg` | Browser and sharing previews |
 | Steeple composition | Newly authored SVG in `src/App.tsx` and `public/og-hacklonega.svg` | Original Dahlonega steeple with newly authored pixel mountain ridges, pine silhouettes, and sky details, clipped to a circle (a night-sky blue in the hero, cobalt in the sharing artwork) |
 | Interactive steeple sphere | Newly authored mesh, shaders, and spring motion in `src/lib/steeple-renderer.ts` and `src/lib/steeple-physics.ts` | Desktop enhancement; textures are generated locally from the same project-owned SVG, with its landscape reused on the reverse side |
 | Hacklonega wordmark glyphs and steeple pixel map | Reused from the existing project-owned CodeHawks `HacklonegaAd.tsx` | The steeple map appears in the landing page; the pixel wordmark glyphs now appear only in the favicon and Open Graph image |

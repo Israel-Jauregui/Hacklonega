@@ -24,6 +24,7 @@ env:
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
   TF_VAR_domain_name: ${{ vars.DOMAIN_NAME }}
   TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+  TF_VAR_google_site_verification: ${{ vars.GOOGLE_SITE_VERIFICATION }}
 
 jobs:
   plan:
