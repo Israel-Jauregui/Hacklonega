@@ -53,3 +53,16 @@ resource "cloudflare_dns_record" "site" {
   proxied  = false
   comment  = "CloudFront (${var.project}, Terraform)"
 }
+
+# Proves ownership of the whole domain to Google Search Console, which is
+# where the sitemap is submitted and indexing is monitored.
+resource "cloudflare_dns_record" "google_site_verification" {
+  count   = local.has_domain && var.google_site_verification != "" ? 1 : 0
+  zone_id = var.cloudflare_zone_id
+  name    = var.domain_name
+  type    = "TXT"
+  content = "\"${var.google_site_verification}\""
+  ttl     = 3600
+  proxied = false
+  comment = "Google Search Console (${var.project}, Terraform)"
+}
