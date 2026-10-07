@@ -4,4 +4,4 @@ A standalone landing page for the Hacktoberfest Hack Day in Dahlonega, Georgia. 
 
 The application is in [CodeHawks-FrontEnd](CodeHawks-FrontEnd/README.md). [CodeHawks-Backend](CodeHawks-Backend/README.md) explains why this static site has no API.
 
-Development follows the three phases in the [implementation plan](PLAN.md): website and visual iteration, GitHub/AWS automation, then domain and Cloudflare launch. The site is currently a Phase 1 draft. Event date, venue, organizer contacts, approved brand assets, and any partner challenge remain pending verification.
+The site is deployed and live at [hacklonega.dev](https://hacklonega.dev/). Development followed the three phases in the [implementation plan](PLAN.md): website and visual iteration, GitHub/AWS automation, then domain and Cloudflare launch. The event is on October 24, 2026. Venue details, organizer contacts, and any partner challenge remain pending verification.
