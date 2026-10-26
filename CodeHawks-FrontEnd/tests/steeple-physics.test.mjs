@@ -110,7 +110,8 @@ test('only active play fills the timer, then the ring dissolves on its own', () 
   const escape = createEscape();
   for (let frame = 0; frame < 600; frame++) advanceEscape(escape, 1 / 60, false);
   assert.equal(escape.played, 0);
-  for (let frame = 0; frame < 60 * (PLAY_TO_FADE - .5); frame++) advanceEscape(escape, 1 / 60, true);
+  const head = PLAY_TO_FADE / 2;
+  for (let frame = 0; frame < Math.round(60 * head); frame++) advanceEscape(escape, 1 / 60, true);
   assert.equal(ringDissolve(escape), 0);
   // Stepping away pauses the timer rather than resetting it.
   for (let frame = 0; frame < 600; frame++) advanceEscape(escape, 1 / 60, false);
@@ -123,7 +124,7 @@ test('only active play fills the timer, then the ring dissolves on its own', () 
   }
   assert.equal(escape.unlocked, true);
   assert.equal(ringDissolve(escape), 1);
-  assert.ok(Math.abs(unlockedAt - (.5 + FADE_TIME)) < .05, `unlocked at ${unlockedAt}s`);
+  assert.ok(Math.abs(unlockedAt - (PLAY_TO_FADE - head + FADE_TIME)) < .05, `unlocked at ${unlockedAt}s`);
 });
 
 const home = { x: 300, y: 200 };

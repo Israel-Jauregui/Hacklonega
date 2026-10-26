@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 // This deliberately favors the original illustration on phones and smaller devices.
 const desktopQuery = '(min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
@@ -37,16 +37,22 @@ const noise = (n: number) => {
 
 // Each pixel has its own moment to go. Mixing noise with a clockwise sweep from the
 // top makes the ring unravel rather than blink out evenly.
-const ringPixels = pixelCircle(44).map(([a, b], index) => {
+const ringCells = pixelCircle(44).map(([a, b], index) => {
   const angle = Math.atan2(b, a);
   const sweep = ((angle + Math.PI / 2) / (Math.PI * 2) + 1) % 1;
-  const style = {
-    '--t': (.8 * (.55 * noise(index) + .45 * sweep)).toFixed(3),
-    '--dx': Math.cos(angle).toFixed(3),
-    '--dy': Math.sin(angle).toFixed(3),
-  } as CSSProperties;
-  return <rect key={index} x={160 + a * CELL - CELL / 2} y={160 + b * CELL - CELL / 2} width={CELL} height={CELL} style={style} />;
+  return {
+    a, b,
+    vars: {
+      '--t': (.8 * (.55 * noise(index) + .45 * sweep)).toFixed(3),
+      '--dx': Math.cos(angle).toFixed(3),
+      '--dy': Math.sin(angle).toFixed(3),
+    },
+  };
 });
+
+const ringPixels = ringCells.map(({ a, b }, index) => (
+  <rect key={index} x={160 + a * CELL - CELL / 2} y={160 + b * CELL - CELL / 2} width={CELL} height={CELL} />
+));
 
 const socketPixels = pixelCircle(40).flatMap(([a, b], index) => (a + b) % 2
   ? []
@@ -68,6 +74,11 @@ export default function SteepleToy({ children }: { children: ReactNode }) {
     const [container, button, pixels, home] = [ball.current, surface.current, ring.current, anchor.current];
     if (!artwork || !container || !button || !pixels || !home) return;
     const elements = { ball: container, button, ring: pixels, home, artwork };
+    // Set through the CSSOM rather than style attributes, which the site's CSP (style-src 'self') blocks
+    // in the prerendered markup.
+    pixels.querySelectorAll('rect').forEach((rect, index) => {
+      for (const [name, value] of Object.entries(ringCells[index]?.vars ?? {})) rect.style.setProperty(name, value);
+    });
     const query = matchMedia(desktopQuery);
     let disposed = false;
     let failed = false;
