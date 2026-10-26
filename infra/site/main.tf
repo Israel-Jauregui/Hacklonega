@@ -13,12 +13,14 @@ locals {
 
   # Checked against the app: no inline scripts or <style>, no external
   # origins. blob: is required for the WebGL steeple texture
-  # (src/lib/steeple-sphere.ts).
+  # (src/lib/steeple-sphere.ts). font-src covers the self-hosted fonts of
+  # the Hacktoberfest look (src/main.tsx).
   content_security_policy = join("; ", [
     "default-src 'none'",
     "script-src 'self'",
     "style-src 'self'",
     "img-src 'self' blob:",
+    "font-src 'self'",
     "connect-src 'self'",
     "manifest-src 'self'",
     "base-uri 'self'",

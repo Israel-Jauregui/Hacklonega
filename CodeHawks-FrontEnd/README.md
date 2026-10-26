@@ -1,6 +1,10 @@
 # Hacklonega frontend
 
-React 19 and Vite 7 landing page for the Hacktoberfest Hack Day in Dahlonega. The site has no registration form; all registration links go to the official MLH OrganizerHQ event.
+React 19 and Vite 7 recap site for the Hacktoberfest Hack Day in Dahlonega, which took place on October 24, 2026. It shows the projects and awards (`src/constants/projects.ts`), a selection of photos (`src/constants/photos.ts`, files in `public/photos/`), and links to MLH's event page and full photo gallery.
+
+The page has two looks from the event's countdown screens: the club Typewriter look (the default) and the Hacktoberfest 2026 look. The button in the header swaps them with a pixel wipe by setting `data-look` on `<html>`; every color and font in `src/styles.css` comes from tokens that the Hacktoberfest look overrides. Its fonts are self-hosted, so the CSP in `infra/site/main.tf` allows `font-src 'self'`.
+
+To add or swap photos, resize them the same way (upright, sRGB WebP, every bit of metadata removed, including location) and list them in `src/constants/photos.ts`. `npm test` checks that every listed photo has its files.
 
 ## Local development
 
@@ -29,7 +33,7 @@ On eligible desktops, the existing SVG illustration becomes the texture of a sma
 
 Scrolling pushes the ball the way it would push a ball in a moving box: it answers changes in scroll speed, smoothed so a mouse wheel's jumps read as a push. Seated, it lags behind the page on a spring in its socket, rolling as it slides, then wobbles back into place. Loose, it keeps its momentum while the page moves under it and bounces off the viewport edges. A hand on the ball holds it still.
 
-While someone plays, a gold pixel ring holds the ball in place. After five seconds of active play the ring unravels pixel by pixel, and the ball can then be pulled out of the banner and thrown anywhere on screen. Loose, it shrinks to a toy size, rolls in the direction it travels, squashes and bounces off the viewport edges, and follows the cursor on a stiff spring so throws keep their momentum. Releases use the fastest stretch of the last ~110ms of pointer movement, which forgives the slowdown people make just before letting go, and a swing faster than 1400px/s slips the ball out of the cursor on its own. After six seconds untouched, or on Escape, it flies home and settles into its seat. A quiet hint appears only while someone is playing.
+While someone plays, a gold pixel ring holds the ball in place. The first grab or squish unravels the ring pixel by pixel in well under a second, and the ball can then be pulled out of the banner and thrown anywhere on screen. Loose, it shrinks to a toy size, rolls in the direction it travels, squashes and bounces off the viewport edges, and follows the cursor on a stiff spring so throws keep their momentum. Releases use the fastest stretch of the last ~110ms of pointer movement, which forgives the slowdown people make just before letting go, and a swing faster than 1400px/s slips the ball out of the cursor on its own. After six seconds untouched, or on Escape, it flies home and settles into its seat. A quiet hint appears only while someone is playing.
 
 Arrow keys spin the ball, or roll it once it is loose. Space/Enter squeeze, and Escape/Home send it home. Orientation uses quaternions, so dragging and rolling behave the same from any angle.
 
@@ -41,7 +45,7 @@ Rendering pauses when settled, when held still, when offscreen, or when the tab 
 
 ## Event facts and release review
 
-Edit `src/constants/event.ts` only after checking OrganizerHQ and the event onboarding materials. The organizer supplied October 24, 2026 as the event date and MCCB 109 as the starting location during copy review. Time, venue, contact email, and any partner challenge remain unset; the page directs visitors to the official MLH event page for details. The hero and footer should be reviewed with the organizer before public distribution.
+`src/constants/event.ts` holds the event facts (date, times, venue) and the MLH and gallery links. Project awards, summaries, and team names in `src/constants/projects.ts` follow the public MLH submissions page; check changes there against it.
 
 The current site does not collect names, emails, registrations, or analytics. Hosting and DNS providers may still process routine request metadata. Review the privacy copy and MLH links before publication.
 

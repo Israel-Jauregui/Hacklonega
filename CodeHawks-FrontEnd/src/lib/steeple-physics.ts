@@ -3,8 +3,9 @@ export type Vec3 = [number, number, number];
 export type Quat = [number, number, number, number];
 
 // Seconds of active play before the ring starts dissolving, and how long it takes.
-export const PLAY_TO_FADE = 5;
-export const FADE_TIME = 2.4;
+// Short on purpose: the first grab or squish frees the ball, so it can be thrown right away.
+export const PLAY_TO_FADE = .15;
+export const FADE_TIME = .6;
 
 // Small fixed substeps keep the springs stable across refresh rates and dropped frames.
 const step = (elapsed: number) => {
