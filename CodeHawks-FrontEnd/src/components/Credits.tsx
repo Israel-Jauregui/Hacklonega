@@ -8,7 +8,7 @@ export function HostedBy({ className = '' }: { className?: string }) {
       <img className="host__mark" src="/partners/swe-mark.svg" alt="" width="1000" height="1000" />
       <p>
         <span className="host__label">Hosted by</span>
-        <span className="host__name">{event.clubName}</span>
+        <a className="host__name" href={event.clubUrl}>{event.clubName}</a>
         <span className="host__place">{event.hostName} // {event.location}</span>
       </p>
     </div>

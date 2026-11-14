@@ -4,6 +4,8 @@ export const event = {
   location: 'Dahlonega, Georgia',
   hostName: 'University of North Georgia',
   clubName: 'Software Engineering Club',
+  // The club's own site. The two sites link to each other.
+  clubUrl: 'https://codehawks.org/',
   siteUrl: 'https://hacklonega.dev/',
   description: 'Hacklonega, UNG’s first hackathon, happened on October 24, 2026 in Dahlonega, Georgia. See what students built with open-source AI, the winners, and photos from the day.',
   mlhEventUrl: 'https://www.mlh.com/events/hacktoberfest-hack-day-dahlonega-x-univ-north-georgia',
