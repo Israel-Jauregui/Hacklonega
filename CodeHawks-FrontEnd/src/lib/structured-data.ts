@@ -19,6 +19,7 @@ export function eventJsonLd() {
     organizer: {
       '@type': 'Organization',
       name: `${event.clubName}, ${event.hostName}`,
+      url: event.clubUrl,
     },
     location: {
       '@type': 'Place',

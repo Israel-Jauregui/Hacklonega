@@ -124,6 +124,7 @@ export default function App() {
             <HostedBy className="host--footer" />
           </div>
           <div className="footer-links">
+            <a href={event.clubUrl}>Software Engineering Club @ UNG <span aria-hidden="true">↗</span></a>
             <a href={event.mlhEventUrl}>MLH event page <span aria-hidden="true">↗</span></a>
             <a href={event.projectsUrl}>Projects on MLH <span aria-hidden="true">↗</span></a>
             <a href={event.photosUrl}>All photos <span aria-hidden="true">↗</span></a>
